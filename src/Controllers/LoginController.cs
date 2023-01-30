@@ -21,27 +21,47 @@ public class LoginController : ControllerBase
     public async Task<ActionResult<SsoAuth>> BasicAutenticacao(RequestBasic request)
     {
         var token = await _ssoConnect.PostBasicAsync(request);
-        return Ok(token);
+        if (!token.Success)
+            return BadRequest(new ProblemDetails
+            {
+                Detail = token.ErrorMessage
+            });
+        return Ok(token.SsoAuth);
     }
 
     [HttpPost("credential")]
     public async Task<ActionResult<SsoAuth>> Credential(RequestClientCredential request)
     {
         var token = await _ssoConnect.PostClientAsync(request);
-        return Ok(token);
+        if (!token.Success)
+            return BadRequest(new ProblemDetails
+            {
+                Detail = token.ErrorMessage
+            });
+        return Ok(token.SsoAuth);
     }
 
     [HttpPost("password")]
     public async Task<ActionResult<SsoAuth>> Password(RequestClientPassword request)
     {
         var token = await _ssoConnect.PostPasswordAsync(request);
-        return Ok(token);
+        if (!token.Success)
+            return BadRequest(new ProblemDetails
+            {
+                Detail = token.ErrorMessage
+            });
+        return Ok(token.SsoAuth);
     }
 
     [HttpPost("refresh-token")]
     public async Task<ActionResult<SsoAuth>> Password(RequestRefreshToken request)
     {
         var token = await _ssoConnect.PostRefreshTokenAsync(request);
-        return Ok(token);
+        if (!token.Success)
+            return BadRequest(new ProblemDetails
+            {
+                Detail = token.ErrorMessage
+            });
+        return Ok(token.SsoAuth);
     }
 }

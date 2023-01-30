@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddSsoConnectJwt(builder.Environment, options =>
 {
     options.Audience = "api-test";
+    options.Audiences = "api-test;https://sso-hml.wiz.co/resources;https://sso-hml.wizsolucoes.com.br/resources";
 });
 
 //Injeção de dependencia para uso dos endpoints de geração de token
