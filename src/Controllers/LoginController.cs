@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Wiz.SsoConnect.Extension.Sso.Model;
 using Wiz.SsoConnect.Extension.Sso.Model.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Connect.Net7.Api.Controllers;
 
@@ -20,48 +21,41 @@ public class LoginController : ControllerBase
     [HttpPost("basic")]
     public async Task<ActionResult<SsoAuth>> BasicAutenticacao(RequestBasic request)
     {
-        var token = await _ssoConnect.PostBasicAsync(request);
-        if (!token.Success)
-            return BadRequest(new ProblemDetails
-            {
-                Detail = token.ErrorMessage
-            });
-        return Ok(token.SsoAuth);
+        var data = await _ssoConnect.PostBasicAsync(request);
+        if (!data.Success) 
+            return BadRequest(new ProblemDetails { Detail = data.ErrorMessage });
+
+        return Ok(data.SsoAuth);
     }
 
     [HttpPost("credential")]
     public async Task<ActionResult<SsoAuth>> Credential(RequestClientCredential request)
     {
-        var token = await _ssoConnect.PostClientAsync(request);
-        if (!token.Success)
-            return BadRequest(new ProblemDetails
-            {
-                Detail = token.ErrorMessage
-            });
-        return Ok(token.SsoAuth);
+        var data = await _ssoConnect.PostClientAsync(request);
+        
+        if (!data.Success)
+            return BadRequest(new ProblemDetails { Detail = data.ErrorMessage });
+
+        return Ok(data.SsoAuth);
     }
 
     [HttpPost("password")]
     public async Task<ActionResult<SsoAuth>> Password(RequestClientPassword request)
     {
-        var token = await _ssoConnect.PostPasswordAsync(request);
-        if (!token.Success)
-            return BadRequest(new ProblemDetails
-            {
-                Detail = token.ErrorMessage
-            });
-        return Ok(token.SsoAuth);
+        var data = await _ssoConnect.PostPasswordAsync(request);
+        if (!data.Success)
+            return BadRequest(new ProblemDetails { Detail = data.ErrorMessage });
+
+        return Ok(data.SsoAuth);
     }
 
     [HttpPost("refresh-token")]
     public async Task<ActionResult<SsoAuth>> Password(RequestRefreshToken request)
     {
-        var token = await _ssoConnect.PostRefreshTokenAsync(request);
-        if (!token.Success)
-            return BadRequest(new ProblemDetails
-            {
-                Detail = token.ErrorMessage
-            });
-        return Ok(token.SsoAuth);
+        var data = await _ssoConnect.PostRefreshTokenAsync(request);
+        if (!data.Success)
+            return BadRequest(new ProblemDetails { Detail = data.ErrorMessage });
+
+        return Ok(data.SsoAuth);
     }
 }
